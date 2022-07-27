@@ -15,7 +15,6 @@ PagePer = 10
 class PostView(APIView):
 
 	def get(self, req):
-		
 		page = int(req.GET.get('page', 0))
 		posts = Post.active()[page * PagePer: (page+1) * PagePer]
 
@@ -48,6 +47,8 @@ class PostView(APIView):
 	@api_view(['GET'])
 	def detail(req, id):
 		post = get_object_or_404(Post, id=id, delete_flag=False)
+		post.views += 1
+		post.save()
 		serializer = DetailSerializer(post)
 		return Response(serializer.data, status=status.HTTP_200_OK)
 		

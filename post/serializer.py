@@ -47,7 +47,7 @@ class DetailSerializer(serializers.ModelSerializer):
     like = serializers.SerializerMethodField()
     class Meta:
         model = Post
-        fields = ['id', 'email','title', 'context', 'like']
+        fields = ['id', 'email','title', 'context', 'like', 'views']
 
 
     def get_like(self, obj):
