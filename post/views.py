@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import status
 from post.models import HashTag, Post
-from post.serializer import DetailSerializer, GetSerializer, PatchSerializer, PostSerializer
+from post.serializer import CommentSerializer, DetailSerializer, GetSerializer, PatchSerializer, PostSerializer
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -70,3 +70,13 @@ class PostView(APIView):
 		posts = Post.active().filter(hash_tags__name=req.GET.get('hash_tag', ''))[page * PagePer: (page+1) * PagePer]
 		serializer = GetSerializer(posts, many=True)
 		return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+	@api_view(['POST'])
+	def comment(req, id):
+		data = req.data | {'post_id': id, 'user_id': req.user.id}
+		serializer = CommentSerializer(data=data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_200_OK)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

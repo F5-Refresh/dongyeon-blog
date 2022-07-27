@@ -23,3 +23,9 @@ class Post(models.Model):
     ordering = ['-id']
 class HashTag(models.Model):
   name = models.CharField(max_length=255, unique=True)
+
+
+class Comment(models.Model):
+  user_id =  models.ForeignKey("user.User", on_delete=models.CASCADE, related_name='comments')
+  post_id = models.ForeignKey("post.Post", on_delete=models.CASCADE, related_name='comments')
+  context = models.TextField()

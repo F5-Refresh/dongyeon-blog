@@ -32,6 +32,7 @@ urlpatterns = [
     path('post/<int:id>', PostView.as_view()),
     path('post/detail/<int:id>', PostView.detail),
     path('post/like/<int:id>', PostView.like),
-    path('post/search', PostView.search)
+    path('post/search', PostView.search),
+    path('post/comment/<int:id>', PostView.comment)
     # path('login', UserView)
 ]

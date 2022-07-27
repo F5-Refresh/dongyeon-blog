@@ -1,12 +1,18 @@
-from dataclasses import field
 from rest_framework import serializers
 
-from post.models import HashTag, Post
+from post.models import Comment, HashTag, Post
 
 class HashTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = HashTag
         fields = ['id', 'name']
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
 class GetSerializer(serializers.ModelSerializer):
     hash_tags = HashTagSerializer(many=True, read_only=True)
     user_name = serializers.StringRelatedField(source='user.email')
@@ -45,9 +51,10 @@ class PatchSerializer(serializers.ModelSerializer):
 class DetailSerializer(serializers.ModelSerializer):
     email = serializers.StringRelatedField(source='user.email')
     like = serializers.SerializerMethodField()
+    comments = CommentSerializer(many=True)
     class Meta:
         model = Post
-        fields = ['id', 'email','title', 'context', 'like', 'views']
+        fields = ['id', 'email','title', 'context', 'like', 'views', 'comments']
 
 
     def get_like(self, obj):
@@ -58,3 +65,4 @@ class HashTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = HashTag
         fields = ['name']
+    
