@@ -18,13 +18,20 @@ from django.urls import path
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )
+from post.views import PostView
 
 from user.views import UserView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+
     path('sign_up', UserView.sign_up),
     path('sign_in', UserView.sign_in),
+
+    path('post', PostView.as_view()),
+    path('post/<int:id>', PostView.as_view()),
+    path('post/detail/<int:id>', PostView.detail),
+    path('post/like/<int:id>', PostView.like),
+    path('post/search', PostView.search)
     # path('login', UserView)
 ]
